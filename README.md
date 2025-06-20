@@ -1,9 +1,7 @@
-# PV178-Project
-
 ## Project Overview
 
 Biology Lab Manager called GenLab is a WPF desktop application built with C# and .NET, designed for managing biological sample data in laboratory environments.  
-It supports sample importing/exporting, user authentication, data visualization, and sequence analysis including translation, matching, and classification.
+It supports sample importing and exporting, user authentication, data visualisation, and sequence analysis, including translation, matching, and classification.
 
 ### Features
 
@@ -11,7 +9,7 @@ It supports sample importing/exporting, user authentication, data visualization,
 - Sequence analysis (RNA transcription, protein translation)
 - Organism prediction from DNA sequences
 - Sequence similarity matching with Levenshtein distance
-- Data visualization using charts and visual markers
+- Data visualisation using charts and visual markers
 
 
 ## Project Structure
@@ -42,17 +40,8 @@ It supports sample importing/exporting, user authentication, data visualization,
 
 ## Usage Notes
 
-- Export and import operations (JSON, Excel) are handled asynchronously to ensure smooth UI experience.
+- Export and import operations (JSON, Excel) are handled asynchronously to ensure a smooth UI experience.
 - Exported data files are saved in `ExportedFiles/` folder in either `.json` or `.xlsx` format.
 - Database access is implemented using Entity Framework Core with async queries for performance.
 - All disposable resources (file streams, database contexts) are managed using `using` statements to prevent memory leaks.
 - The application follows the MVVM pattern using CommunityToolkit.Mvvm for clean separation of concerns.
-
-
-
-## Project Info
-
-- **Course**: PV178 
-- **Student**: xpurnoch 
-- **Assignment**: Project 
-- **Branch**: submit  
