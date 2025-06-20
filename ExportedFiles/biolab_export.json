@@ -1,0 +1,12 @@
+[
+  {
+    "Identifier": "SMP-012",
+    "SampleType": "Protein",
+    "Status": "Active",
+    "StorageLocation": "BOX-12",
+    "CollectedAt": "2025-05-10",
+    "Sequence": "AAT",
+    "Lab": "B",
+    "User": "tst"
+  }
+]

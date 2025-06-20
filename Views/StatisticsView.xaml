@@ -1,0 +1,92 @@
+﻿<UserControl
+    x:Class="BioLabManager.Views.StatisticsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+    Background="#1e1e2f">
+
+    <ScrollViewer VerticalScrollBarVisibility="Hidden">
+        <StackPanel Margin="30" Orientation="Vertical">
+
+            <TextBlock
+                Margin="0,0,0,30"
+                HorizontalAlignment="Center"
+                FontSize="28"
+                FontWeight="Bold"
+                Foreground="White"
+                Text="📊 Sample Statistics" />
+
+            <!--  Samples by Type  -->
+            <Border
+                Margin="0,0,0,20"
+                Padding="20"
+                Background="#2c2f48"
+                CornerRadius="10">
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        HorizontalAlignment="Left"
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Foreground="White"
+                        Text="🧬 Samples by Type" />
+                    <StackPanel HorizontalAlignment="Center">
+                        <lvc:PieChart
+                            Width="250"
+                            Height="250"
+                            LegendPosition="Hidden"
+                            Series="{Binding TypeSeries}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!--  Samples by Status  -->
+            <Border
+                Margin="0,0,0,20"
+                Padding="20"
+                Background="#2c2f48"
+                CornerRadius="10">
+                <StackPanel>
+                    <TextBlock
+                        Margin="0,0,0,10"
+                        HorizontalAlignment="Left"
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Foreground="White"
+                        Text="🔋 Samples by Status" />
+                    <StackPanel HorizontalAlignment="Center">
+                        <lvc:PieChart
+                            Width="250"
+                            Height="250"
+                            LegendPosition="Hidden"
+                            Series="{Binding StatusSeries}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!--  Samples by Lab - Column Chart  -->
+            <Border
+                Margin="0,0,0,20"
+                Padding="10"
+                Background="#2c2f48"
+                CornerRadius="10">
+                <StackPanel>
+                    <TextBlock
+                        Margin="10,0,0,10"
+                        FontSize="16"
+                        FontWeight="SemiBold"
+                        Foreground="White"
+                        Text="🏢 Samples by Lab" />
+
+                    <lvc:CartesianChart
+                        Height="300"
+                        Margin="0,0,0,0"
+                        Series="{Binding LabSeries}"
+                        XAxes="{Binding LabXAxis}"
+                        YAxes="{Binding LabYAxis}" />
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,337 @@
+﻿<UserControl
+    x:Class="BioLabManager.Views.SequenceAnalyzerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:skia="clr-namespace:LiveChartsCore.SkiaSharpView.Painting;assembly=LiveChartsCore.SkiaSharpView"
+    Background="#1e1e2f">
+
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--  left side  -->
+        <StackPanel Grid.Column="0">
+            <TextBlock
+                Margin="0,0,0,20"
+                FontSize="24"
+                FontWeight="Bold"
+                Foreground="White"
+                Text="🧬 Sequence Analyzer" />
+
+            <TextBox
+                Height="100"
+                Padding="10"
+                mah:TextBoxHelper.Watermark="Only A, T, C, G characters are allowed"
+                AcceptsReturn="True"
+                Background="#2c2f48"
+                BorderThickness="0"
+                CaretBrush="White"
+                FontFamily="Consolas"
+                FontSize="14"
+                Foreground="White"
+                PreviewTextInput="InputSequence_PreviewTextInput"
+                Text="{Binding InputSequence, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="Wrap"
+                VerticalScrollBarVisibility="Hidden" />
+
+            <!--  buttons  -->
+            <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                <Button
+                    Height="35"
+                    Margin="0,10,10,0"
+                    Background="#007acc"
+                    BorderThickness="0"
+                    Command="{Binding AnalyzeCommand}"
+                    Content="📊 ANALYZE"
+                    Cursor="Hand"
+                    FontWeight="Bold"
+                    Foreground="White">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border
+                                            x:Name="border"
+                                            Padding="10,4"
+                                            Background="#007acc"
+                                            CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#289aff" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#005fa3" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button
+                    Height="35"
+                    Margin="0,10,10,0"
+                    Background="#007acc"
+                    BorderThickness="0"
+                    Command="{Binding PredictOrganismFromSequenceCommand}"
+                    Content="🔍 PREDICT ORGANISM"
+                    Cursor="Hand"
+                    FontWeight="Bold"
+                    Foreground="White">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border
+                                            x:Name="border"
+                                            Padding="10,4"
+                                            Background="#007acc"
+                                            CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#289aff" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#005fa3" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <Button
+                    Height="35"
+                    Margin="0,10,0,0"
+                    Background="#007acc"
+                    BorderThickness="0"
+                    Command="{Binding TranslateToProteinFromSequenceCommand}"
+                    Content="🔄 TRANSLATE TO PROTEIN"
+                    Cursor="Hand"
+                    FontWeight="Bold"
+                    Foreground="White">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border
+                                            x:Name="border"
+                                            Padding="10,4"
+                                            Background="#007acc"
+                                            CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#289aff" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#005fa3" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+
+            <!--  results  -->
+            <TextBlock
+                Margin="0,10,0,0"
+                FontSize="14"
+                Foreground="LightGreen"
+                Text="{Binding PredictedOrganism}"
+                TextWrapping="Wrap" />
+
+            <!--  RNA/Protein results  -->
+            <StackPanel Margin="0,10,0,0">
+                <TextBlock
+                    Margin="0,80,0,0"
+                    FontSize="20"
+                    FontWeight="SemiBold"
+                    Foreground="White"
+                    Text="〰️ RNA Sequence:" />
+                <ScrollViewer
+                    Height="100"
+                    Margin="0,5,0,10"
+                    Background="#2c2f48"
+                    VerticalScrollBarVisibility="Hidden">
+                    <TextBlock
+                        FontFamily="Consolas"
+                        FontSize="20"
+                        Foreground="LightSkyBlue"
+                        Text="{Binding RnaSequence}"
+                        TextWrapping="Wrap" />
+                </ScrollViewer>
+                <Button
+                    Width="150"
+                    Height="35"
+                    Margin="0,10,0,0"
+                    Background="#007acc"
+                    BorderThickness="0"
+                    Command="{Binding CopyRnaCommand}"
+                    Content="🔄 COPY RNA"
+                    Cursor="Hand"
+                    FontWeight="Bold"
+                    Foreground="White">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border
+                                            x:Name="border"
+                                            Padding="10,4"
+                                            Background="#007acc"
+                                            CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#289aff" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#005fa3" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <TextBlock
+                    Margin="0,0,0,0"
+                    FontSize="20"
+                    FontWeight="SemiBold"
+                    Foreground="White"
+                    Text="🥩 Protein Sequence:" />
+                <ScrollViewer
+                    Height="100"
+                    Margin="0,5,0,10"
+                    Background="#2c2f48"
+                    VerticalScrollBarVisibility="Hidden">
+                    <TextBlock
+                        FontFamily="Consolas"
+                        FontSize="20"
+                        Foreground="Yellow"
+                        Text="{Binding ProteinSequence}"
+                        TextWrapping="Wrap" />
+                </ScrollViewer>
+                <Button
+                    Width="150"
+                    Height="35"
+                    Margin="0,10,0,0"
+                    Background="#007acc"
+                    BorderThickness="0"
+                    Command="{Binding CopyProteinCommand}"
+                    Content="🔄 COPY PROTEIN"
+                    Cursor="Hand"
+                    FontWeight="Bold"
+                    Foreground="White">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border
+                                            x:Name="border"
+                                            Padding="10,4"
+                                            Background="#007acc"
+                                            CornerRadius="5">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#289aff" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#005fa3" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+
+        <!--  chart  -->
+        <Border
+            Grid.Column="1"
+            Margin="20,0,0,0"
+            Padding="10"
+            Background="#2c2f48"
+            CornerRadius="8">
+            <StackPanel Margin="0,20,0,0">
+                <TextBlock
+                    Margin="0,0,0,10"
+                    HorizontalAlignment="Center"
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    Foreground="White"
+                    Text="📊 Nucleotide Composition" />
+                <lvc:PieChart
+                    Height="250"
+                    LegendPosition="Right"
+                    LegendTextPaint="{Binding LegendTextPaint}"
+                    Series="{Binding BaseCompositionSeries}" />
+                <TextBlock
+                    Margin="0,20,0,10"
+                    HorizontalAlignment="Center"
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    Foreground="White"
+                    Text="🧬 DNA Visualizer" />
+                <ScrollViewer
+                    Height="340"
+                    HorizontalAlignment="Center"
+                    VerticalScrollBarVisibility="Hidden">
+                    <ItemsControl ItemsSource="{Binding DnaVisualItems}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border
+                                    Width="20"
+                                    Height="20"
+                                    Margin="1"
+                                    Background="{Binding Color}">
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Foreground="Black"
+                                        Text="{Binding Base}" />
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
